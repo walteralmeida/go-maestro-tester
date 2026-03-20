@@ -56,8 +56,8 @@ public class TaskService
         var lines = new List<string> { "Id,Title,IsCompleted,Priority,CreatedAt" };
         foreach (var task in _tasks)
         {
-            // BUG: title with commas breaks CSV format — no quoting
-            lines.Add($"{task.Id},{task.Title},{task.IsCompleted},{task.Priority},{task.CreatedAt}");
+            var escapedTitle = "\"" + task.Title.Replace("\"", "\"\"") + "\"";
+            lines.Add($"{task.Id},{escapedTitle},{task.IsCompleted},{task.Priority},{task.CreatedAt}");
         }
         return string.Join(Environment.NewLine, lines);
     }
